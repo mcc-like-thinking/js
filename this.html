@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<h1>谁调用它，this就指向谁</h1>
+	<button id="test" style="color: red">click me</button>
+
+	<script type="text/javascript">
+		window.m = 100
+		function test() {
+			alert(this.m)
+		}
+		//window.test()
+
+		var obj = {
+			m: 200,
+			test: function() {
+				alert(this.m)
+
+				return function() {
+					alert(this.m)
+				}
+			} 
+		}
+		//obj.test()
+		// ~(obj.test())(); // ~(obj.test()) 等价于 var t = obj.test()
+
+		var style = {
+			color: 'green'
+		}
+		//test2()
+		function test2() {
+			alert(this.style.color)
+		}
+		document.getElementById('test').onclick = test2 // button 调用了test2
+
+		function test3() {
+			this.a = 1
+		}
+		test3.prototype.geta = function() {
+			return this.a
+		}
+		var p = new test3;
+		console.log(p.geta())
+
+		test3.prototype.a = 1000
+		console.log(p) // {a: 1} 构造函数的优先级更大
+
+	</script>
+</body>
+</html>
